@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>97F40D4D-DBA8-4AF6-AA6D-BAB31653BF78</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Photomania</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2A8084036EC8604788061DA5FCB80B82EA753269</key>
+		<string>https://github.com/maselko/Photomania-Alamofire.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Photomania.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2A8084036EC8604788061DA5FCB80B82EA753269</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/maselko/Photomania-Alamofire.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2A8084036EC8604788061DA5FCB80B82EA753269</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2A8084036EC8604788061DA5FCB80B82EA753269</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Photomania_Starter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

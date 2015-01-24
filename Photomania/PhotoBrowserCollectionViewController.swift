@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Essan Parto. All rights reserved.
 //
 
+// Dodawanie Alamofire do projektu.
+// 1. Przeciągnąć plik Alamofire.xcodeproj pod główną nazwę projektu
+// 2. Wejść w główny projekt -> embaded binaries -> dodać Alamofire.framework
+
 import UIKit
 
 class PhotoBrowserCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
