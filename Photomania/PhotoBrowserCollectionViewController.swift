@@ -11,6 +11,7 @@
 // 2. Wejść w główny projekt -> embaded binaries -> dodać Alamofire.framework
 
 import UIKit
+import Alamofire
 
 class PhotoBrowserCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   var photos = NSMutableOrderedSet()
@@ -26,6 +27,13 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     super.viewDidLoad()
     
     setupView()
+    
+    // Simple request with Alamofire
+    Alamofire.request(.GET, "https://api.500px.com/v1/photos").responseJSON() {
+        (_, _, data, _) in
+        println(data)
+    }
+
   }
   
   override func didReceiveMemoryWarning() {
