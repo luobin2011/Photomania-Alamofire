@@ -49,11 +49,15 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     
     let imageURL = (photos.objectAtIndex(indexPath.row) as PhotoInfo).url
     
-    Alamofire.request(.GET, imageURL).response() {
-        (_, _, data, _) in
-        
-        let image = UIImage(data: data! as NSData)
-        cell.imageView.image = image
+    cell.imageView.image = nil
+    
+    cell.request = Alamofire.request(.GET, imageURL).responseImage() {
+        (request, _, image, error) in
+        if error == nil && image != nil {
+            if request.URLString == cell.request?.request.URLString {
+                cell.imageView.image = image
+            }
+        }
     }
     
     return cell
@@ -154,7 +158,8 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
 
 class PhotoBrowserCollectionViewCell: UICollectionViewCell {
   let imageView = UIImageView()
-  
+  var request: Alamofire.Request?
+    
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
