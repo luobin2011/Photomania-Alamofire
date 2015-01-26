@@ -220,9 +220,26 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate, UIPopov
                     
                     return temporaryURL
                 }
-                // 3
-                Alamofire.download(.GET, imageURL, destination)
+
+                // 4
+                let progressIndicatorView = UIProgressView(frame: CGRect(x: 0.0, y: 80.0, width: self.view.bounds.width, height: 10.0))
+                progressIndicatorView.tintColor = UIColor.blueColor()
+                self.view.addSubview(progressIndicatorView)
                 
+                // 5
+                Alamofire.download(.GET, imageURL, destination).progress {
+                    (_, totalBytesRead, totalBytesExpectedToRead) in
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        // 6
+                        progressIndicatorView.setProgress(Float(totalBytesRead) / Float(totalBytesExpectedToRead), animated: true)
+                        
+                        // 7
+                        if totalBytesRead == totalBytesExpectedToRead {
+                            progressIndicatorView.removeFromSuperview()
+                        }
+                    }
+                }
             }
         }
     }
