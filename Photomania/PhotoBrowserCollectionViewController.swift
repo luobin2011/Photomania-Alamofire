@@ -16,6 +16,7 @@ import Alamofire
 class PhotoBrowserCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
   var photos = NSMutableOrderedSet()
   
+  let imageCache = NSCache()
   let refreshControl = UIRefreshControl()
   var populatingPhotos = false
   var currentPage = 1
@@ -44,24 +45,45 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     return photos.count
   }
   
-  override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoBrowserCellIdentifier, forIndexPath: indexPath) as PhotoBrowserCollectionViewCell
-    
-    let imageURL = (photos.objectAtIndex(indexPath.row) as PhotoInfo).url
-    
-    cell.imageView.image = nil
-    
-    cell.request = Alamofire.request(.GET, imageURL).responseImage() {
-        (request, _, image, error) in
-        if error == nil && image != nil {
-            if request.URLString == cell.request?.request.URLString {
-                cell.imageView.image = image
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoBrowserCellIdentifier, forIndexPath: indexPath) as PhotoBrowserCollectionViewCell
+        
+        let imageURL = (photos.objectAtIndex(indexPath.row) as PhotoInfo).url
+        
+        // 1
+        if cell.request?.request.URLString != imageURL {
+            cell.request?.cancel()
+        }
+        
+        // 2
+        if let image = self.imageCache.objectForKey(imageURL) as? UIImage {
+            cell.imageView.image = image
+        } else {
+            // 3
+            cell.imageView.image = nil
+            
+            // 4
+            cell.request = Alamofire.request(.GET, imageURL).validate(contentType: ["image/*"]).responseImage() {
+                (request, _, image, error) in
+                if error == nil && image != nil {
+                    // 5
+                    self.imageCache.setObject(image!, forKey: request.URLString)
+                    
+                    // 6
+                    if request.URLString == cell.request?.request.URLString {
+                        cell.imageView.image = image
+                    }
+                } else {
+                    /*
+                    If the cell went off-screen before the image was downloaded, we cancel it and
+                    an NSURLErrorDomain (-999: cancelled) is returned. This is a normal behavior.
+                    */
+                }
             }
         }
+        
+        return cell
     }
-    
-    return cell
-  }
   
   override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
     return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: PhotoBrowserFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
