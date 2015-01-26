@@ -28,12 +28,11 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     
     setupView()
     
-    // Simple request with Alamofire
-    Alamofire.request(.GET, "https://api.500px.com/v1/photos").responseJSON() {
-        (_, _, data, _) in
-        println(data)
+    // Request with Alamofire
+    Alamofire.request(.GET, "https://api.500px.com/v1/photos", parameters: ["consumer_key": "KJJAzOJIPGRA3sbwCNaLUDTYX6I8ryUQnpNU5U7X"]).responseJSON() {
+        (_, _, JSON, _) in
+        println(JSON)
     }
-
   }
   
   override func didReceiveMemoryWarning() {
