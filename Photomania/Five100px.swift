@@ -10,13 +10,6 @@ import UIKit
 import Alamofire
 
 struct Five100px {
-  enum ImageSize: Int {
-    case Tiny = 1
-    case Small = 2
-    case Medium = 3
-    case Large = 4
-    case XLarge = 5
-    
     enum Router: URLRequestConvertible {
         static let baseURLString = "https://api.500px.com/v1"
         static let consumerKey = "KJJAzOJIPGRA3sbwCNaLUDTYX6I8ryUQnpNU5U7X"
@@ -47,6 +40,14 @@ struct Five100px {
             return encoding.encode(URLRequest, parameters: parameters).0
         }
     }
+    
+  enum ImageSize: Int {
+    case Tiny = 1
+    case Small = 2
+    case Medium = 3
+    case Large = 4
+    case XLarge = 5
+    
   }
   
   enum Category: Int, Printable {
