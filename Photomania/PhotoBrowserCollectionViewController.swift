@@ -99,7 +99,7 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     navigationController?.setNavigationBarHidden(false, animated: true)
     
     let layout = UICollectionViewFlowLayout()
-    let itemWidth = (view.bounds.size.width - 2) / 3
+    let itemWidth = (view.bounds.size.width - 3) / 4
     layout.itemSize = CGSize(width: itemWidth, height: itemWidth)
     layout.minimumInteritemSpacing = 1.0
     layout.minimumLineSpacing = 1.0
@@ -116,7 +116,7 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     collectionView!.registerClass(PhotoBrowserCollectionViewCell.classForCoder(), forCellWithReuseIdentifier: PhotoBrowserCellIdentifier)
     collectionView!.registerClass(PhotoBrowserCollectionViewLoadingCell.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: PhotoBrowserFooterViewIdentifier)
     
-    refreshControl.tintColor = UIColor.whiteColor()
+    refreshControl.tintColor = UIColor.greenColor()
     refreshControl.addTarget(self, action: "handleRefresh", forControlEvents: .ValueChanged)
     collectionView!.addSubview(refreshControl)
   }
@@ -217,6 +217,7 @@ class PhotoBrowserCollectionViewLoadingCell: UICollectionReusableView {
     
     spinner.startAnimating()
     spinner.center = self.center
+    spinner.color = UIColor.yellowColor()
     addSubview(spinner)
   }
 }
