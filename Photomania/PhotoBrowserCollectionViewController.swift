@@ -108,7 +108,7 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     collectionView!.collectionViewLayout = layout
     
     let titleLabel = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 60.0, height: 30.0))
-    titleLabel.text = "Photomania"
+    titleLabel.text = "Luob Photomania"
     titleLabel.textColor = UIColor.whiteColor()
     titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
     navigationItem.titleView = titleLabel
