@@ -33,8 +33,8 @@ class PhotoDetailsViewController: UIViewController {
     tapGesture.numberOfTouchesRequired = 1
     view.addGestureRecognizer(tapGesture)
     
-    highestLabel.text = NSString(format: "%.1f", photoInfo?.highest ?? 0)
-    pulseLabel.text = NSString(format: "%.1f", photoInfo?.pulse ?? 0)
+    highestLabel.text = NSString(format: "%.1f", photoInfo?.highest ?? 0) as String
+    pulseLabel.text = NSString(format: "%.1f", photoInfo?.pulse ?? 0) as String
     viewsLabel.text = "\(photoInfo?.views ?? 0)"
     cameraLabel.text = photoInfo?.camera
     focalLengthLabel.text = photoInfo?.focalLength

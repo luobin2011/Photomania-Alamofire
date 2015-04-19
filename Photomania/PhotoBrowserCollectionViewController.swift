@@ -46,9 +46,9 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
   }
   
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoBrowserCellIdentifier, forIndexPath: indexPath) as PhotoBrowserCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoBrowserCellIdentifier, forIndexPath: indexPath) as! PhotoBrowserCollectionViewCell
         
-        let imageURL = (photos.objectAtIndex(indexPath.row) as PhotoInfo).url
+        let imageURL = (photos.objectAtIndex(indexPath.row) as! PhotoInfo).url
         
         // 1
         if cell.request?.request.URLString != imageURL {
@@ -86,11 +86,11 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
     }
   
   override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-    return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: PhotoBrowserFooterViewIdentifier, forIndexPath: indexPath) as UICollectionReusableView
+    return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: PhotoBrowserFooterViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
   }
   
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    performSegueWithIdentifier("ShowPhoto", sender: (self.photos.objectAtIndex(indexPath.item) as PhotoInfo).id)
+    performSegueWithIdentifier("ShowPhoto", sender: (self.photos.objectAtIndex(indexPath.item) as! PhotoInfo).id)
   }
   
   // MARK: Helper
@@ -123,8 +123,8 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "ShowPhoto" {
-      (segue.destinationViewController as PhotoViewerViewController).photoID = sender!.integerValue
-      (segue.destinationViewController as PhotoViewerViewController).hidesBottomBarWhenPushed = true
+      (segue.destinationViewController as! PhotoViewerViewController).photoID = sender!.integerValue
+      (segue.destinationViewController as! PhotoViewerViewController).hidesBottomBarWhenPushed = true
     }
   }
 
@@ -150,7 +150,7 @@ class PhotoBrowserCollectionViewController: UICollectionViewController, UICollec
                 // 4
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                     // 5, 6, 7
-                    let photoInfos = ((JSON as NSDictionary).valueForKey("photos") as [NSDictionary]).filter({ ($0["nsfw"] as Bool) == false }).map { PhotoInfo(id: $0["id"] as Int, url: $0["image_url"] as String) }
+                    let photoInfos = ((JSON as! NSDictionary).valueForKey("photos") as! [NSDictionary]).filter({ ($0["nsfw"] as! Bool) == false }).map { PhotoInfo(id: $0["id"] as! Int, url: $0["image_url"] as! String) }
                     
                     // 8
                     let lastItem = self.photos.count

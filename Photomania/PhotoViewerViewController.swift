@@ -162,7 +162,7 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate, UIPopov
   }
   
   func barButtonItemWithImageNamed(imageName: String?, title: String?, action: Selector? = nil) -> UIBarButtonItem {
-    let button = UIButton.buttonWithType(.Custom) as UIButton
+    let button = UIButton.buttonWithType(.Custom) as! UIButton
     
     if imageName != nil {
       button.setImage(UIImage(named: imageName!)!.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
@@ -207,8 +207,8 @@ class PhotoViewerViewController: UIViewController, UIScrollViewDelegate, UIPopov
             (_, _, JSON, error) in
             
             if error == nil {
-                let jsonDictionary = (JSON as NSDictionary)
-                let imageURL = jsonDictionary.valueForKeyPath("photo.image_url") as String
+                let jsonDictionary = (JSON as! NSDictionary)
+                let imageURL = jsonDictionary.valueForKeyPath("photo.image_url") as! String
                 
                 // 2
                 let destination: (NSURL, NSHTTPURLResponse) -> (NSURL) = {

@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 
 @objc public protocol ResponseCollectionSerializable {
-    class func collection(#response: NSHTTPURLResponse, representation: AnyObject) -> [Self]
+    static func collection(#response: NSHTTPURLResponse, representation: AnyObject) -> [Self]
 }
 
 extension Alamofire.Request {
@@ -187,8 +187,8 @@ class PhotoInfo: NSObject, ResponseObjectSerializable {
   }
   
   required init(response: NSHTTPURLResponse, representation: AnyObject) {
-    self.id = representation.valueForKeyPath("photo.id") as Int
-    self.url = representation.valueForKeyPath("photo.image_url") as String
+    self.id = representation.valueForKeyPath("photo.id") as! Int
+    self.url = representation.valueForKeyPath("photo.image_url") as! String
     
     self.favoritesCount = representation.valueForKeyPath("photo.favorites_count") as? Int
     self.votesCount = representation.valueForKeyPath("photo.votes_count") as? Int
@@ -212,7 +212,7 @@ class PhotoInfo: NSObject, ResponseObjectSerializable {
   }
   
   override func isEqual(object: AnyObject!) -> Bool {
-    return (object as PhotoInfo).id == self.id
+    return (object as! PhotoInfo).id == self.id
   }
   
   override var hash: Int {
@@ -221,10 +221,10 @@ class PhotoInfo: NSObject, ResponseObjectSerializable {
 }
 
 final class Comment: ResponseCollectionSerializable {
-    class func collection(#response: NSHTTPURLResponse, representation: AnyObject) -> [Comment] {
+    @objc class func collection(#response: NSHTTPURLResponse, representation: AnyObject) -> [Comment] {
         var comments = [Comment]()
         
-        for comment in representation.valueForKeyPath("comments") as [NSDictionary] {
+        for comment in representation.valueForKeyPath("comments") as! [NSDictionary] {
             comments.append(Comment(JSON: comment))
         }
         
@@ -236,8 +236,8 @@ final class Comment: ResponseCollectionSerializable {
     let commentBody: String
     
     init(JSON: AnyObject) {
-        userFullname = JSON.valueForKeyPath("user.fullname") as String
-        userPictureURL = JSON.valueForKeyPath("user.userpic_url") as String
-        commentBody = JSON.valueForKeyPath("body") as String
+        userFullname = JSON.valueForKeyPath("user.fullname") as! String
+        userPictureURL = JSON.valueForKeyPath("user.userpic_url") as! String
+        commentBody = JSON.valueForKeyPath("body") as! String
     }
 }

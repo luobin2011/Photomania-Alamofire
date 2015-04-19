@@ -46,7 +46,7 @@ class PhotoCommentsViewController: UITableViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as PhotoCommentTableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! PhotoCommentTableViewCell
     
     cell.userFullnameLabel.text = comments![indexPath.row].userFullname
     cell.commentLabel.text = comments![indexPath.row].commentBody

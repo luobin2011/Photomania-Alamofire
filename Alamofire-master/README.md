@@ -1,6 +1,6 @@
 ![Alamofire: Elegant Networking in Swift](https://raw.githubusercontent.com/Alamofire/Alamofire/assets/alamofire.png)
 
-[![Build Status](http://img.shields.io/travis/Alamofire/Alamofire.swift/master.svg?style=flat)](https://travis-ci.org/Alamofire/Alamofire)
+[![Build Status](https://travis-ci.org/Alamofire/Alamofire.svg)](https://travis-ci.org/Alamofire/Alamofire)
 
 Alamofire is an HTTP networking library written in Swift, from the [creator](https://github.com/mattt) of [AFNetworking](https://github.com/afnetworking/afnetworking).
 
@@ -20,7 +20,7 @@ Alamofire is an HTTP networking library written in Swift, from the [creator](htt
 ## Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.1
+- Xcode 6.3
 
 ## Communication
 
@@ -32,17 +32,75 @@ Alamofire is an HTTP networking library written in Swift, from the [creator](htt
 
 ## Installation
 
-> For application targets that do not support embedded frameworks, such as iOS 7, Alamofire can be integrated by including the `Alamofire.swift` source file directly, wrapping the top-level types in `struct Alamofire` to simulate a namespace. Yes, this sucks.
+> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks.**
+>
+> To use Alamofire with a project targeting iOS 7, you must include the `Alamofire.swift` source file directly in your project. See the ['Source File'](#source-file) section for instructions.
 
-_Due to the current lack of [proper infrastructure](http://cocoapods.org) for Swift dependency management, using Alamofire in your project requires the following steps:_
+### CocoaPods
 
-1. Add Alamofire as a [submodule](http://git-scm.com/docs/git-submodule) by opening the Terminal, `cd`-ing into your top-level project directory, and entering the command `git submodule add https://github.com/Alamofire/Alamofire.git`
-2. Open the `Alamofire` folder, and drag `Alamofire.xcodeproj` into the file navigator of your app project.
-3. In Xcode, navigate to the target configuration window by clicking on the blue project icon, and selecting the application target under the "Targets" heading in the sidebar.
-4. Ensure that the deployment target of Alamofire.framework matches that of the application target.
-5. In the tab bar at the top of that window, open the "Build Phases" panel.
-6. Expand the "Target Dependencies" group, and add `Alamofire.framework`.
-7. Click on the `+` button at the top left of the panel and select "New Copy Files Phase". Rename this new phase to "Copy Frameworks", set the "Destination" to "Frameworks", and add `Alamofire.framework`.
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
+
+CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'Alamofire', '~> 1.2'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+### Carthage
+
+Carthage is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
+
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate Alamofire into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "Alamofire/Alamofire" >= 1.2
+```
+
+### Manually
+
+If you prefer not to use either of the aforementioned dependency managers, you can integrate Alamofire into your project manually.
+
+### Embedded Framework
+
+- Add Alamofire as a [submodule](http://git-scm.com/docs/git-submodule) by opening the Terminal, `cd`-ing into your top-level project directory, and entering the following command:
+
+```bash
+$ git submodule add https://github.com/Alamofire/Alamofire.git
+```
+
+- Open the `Alamofire` folder, and drag `Alamofire.xcodeproj` into the file navigator of your app project.
+- In Xcode, navigate to the target configuration window by clicking on the blue project icon, and selecting the application target under the "Targets" heading in the sidebar.
+- Ensure that the deployment target of Alamofire.framework matches that of the application target.
+- In the tab bar at the top of that window, open the "Build Phases" panel.
+- Expand the "Target Dependencies" group, and add `Alamofire.framework`.
+- Click on the `+` button at the top left of the panel and select "New Copy Files Phase". Rename this new phase to "Copy Frameworks", set the "Destination" to "Frameworks", and add `Alamofire.framework`.
+
+#### Source File
+
+For application targets that do not support embedded frameworks, such as iOS 7, Alamofire can be integrated by adding the `Alamofire.swift` source file directly into your project. Note that any calling conventions described in the ['Usage'](#usage) section with the `Alamofire` prefix would instead omit it (for example, `Alamofire.request` becomes `request`), since this functionality is incorporated into the top-level namespace.
 
 ---
 
@@ -184,7 +242,7 @@ enum ParameterEncoding {
 }
 ```
 
-- `URL`: A query string to be set as or appended to any existing URL query for `GET`, `HEAD`, and `DELETE` requests, or set as the body for requests with any other HTTP method. The `Content-Type` HTTP header field of an encoded request with HTTP body is set to `application/x-www-form-urlencoded`. _Since there is no published specification for how to encode collection types, the convention of appending `[]` to the key for array values (`foo[]=1&foo[]=2`), and appending the key surrounded by square brackets for nested dictionary values (`foo[bar]=baz`)._
+- `URL`: A query string to be set as or appended to any existing URL query for `GET`, `HEAD`, and `DELETE` requests, or set as the body for requests with any other HTTP method. The `Content-Type` HTTP header field of an encoded request with HTTP body is set to `application/x-www-form-urlencoded`. _Since there is no published specification for how to encode collection types, Alamofire follows the convention of appending `[]` to the key for array values (`foo[]=1&foo[]=2`), and appending the key surrounded by square brackets for nested dictionary values (`foo[bar]=baz`)._
 - `JSON`: Uses `NSJSONSerialization` to create a JSON representation of the parameters object, which is set as the body of the request. The `Content-Type` HTTP header field of an encoded request is set to `application/json`.
 - `PropertyList`: Uses `NSPropertyListSerialization` to create a plist representation of the parameters object, according to the associated format and write options values, which is set as the body of the request. The `Content-Type` HTTP header field of an encoded request is set to `application/x-plist`.
 - `Custom`: Uses the associated closure value to construct a new request given an existing request and parameters.
@@ -197,7 +255,7 @@ var request = NSURLRequest(URL: URL)
 
 let parameters = ["foo": "bar"]
 let encoding = Alamofire.ParameterEncoding.URL
-(request, _) = encoding.encode(request, parameters)
+(request, _) = encoding.encode(request, parameters: parameters)
 ```
 
 #### POST Request with JSON-encoded Parameters
@@ -480,15 +538,15 @@ extension Request {
             }
 
             var XMLSerializationError: NSError?
-            let XML = ONOXMLDocument.XMLDocumentWithData(data, &XMLSerializationError)
+            let XML = ONOXMLDocument(data: data, &XMLSerializationError)
 
             return (XML, XMLSerializationError)
         }
     }
 
-    func responseXMLDocument(completionHandler: (NSURLRequest, NSHTTPURLResponse?, OnoXMLDocument?, NSError?) -> Void) -> Self {
+    func responseXMLDocument(completionHandler: (NSURLRequest, NSHTTPURLResponse?, ONOXMLDocument?, NSError?) -> Void) -> Self {
         return response(serializer: Request.XMLResponseSerializer(), completionHandler: { (request, response, XML, error) in
-            completionHandler(request, response, XML, error)
+            completionHandler(request, response, XML as? ONOXMLDocument, error)
         })
     }
 }
@@ -569,49 +627,59 @@ extension Alamofire.Request {
 
 ### URLStringConvertible
 
-Types adopting the `URLStringConvertible` protocol can be used to construct URL strings, which are then used to construct URL requests. Top-level convenience methods taking a `URLStringConvertible` argument are provided to allow for type-safe routing behavior.
+Types adopting the `URLStringConvertible` protocol can be used to construct URL strings, which are then used to construct URL requests. `NSString`, `NSURL`, `NSURLComponents`, and `NSURLRequest` conform to `URLStringConvertible` by default, allowing any of them to be passed as `URLString` parameters to the `request`, `upload`, and `download` methods:
 
-Applications interacting with web applications in a significant manner are encouraged to adopt either `URLStringConvertible` or `URLRequestConvertible` as a way to ensure consistency of requested endpoints.
+```swift
+let string = NSString(string: "http://httpbin.org/post")
+Alamofire.request(.POST, string)
+
+let URL = NSURL(string: string)!
+Alamofire.request(.POST, URL)
+
+let URLRequest = NSURLRequest(URL: URL)
+Alamofire.request(.POST, URLRequest) // overrides `HTTPMethod` of `URLRequest`
+
+let URLComponents = NSURLComponents(URL: URL, resolvingAgainstBaseURL: true)
+Alamofire.request(.POST, URLComponents)
+```
+
+Applications interacting with web applications in a significant manner are encouraged to have custom types conform to `URLStringConvertible` as a convenient way to map domain-specific models to server resources.
 
 #### Type-Safe Routing
 
 ```swift
-enum Router: URLStringConvertible {
+extension User: URLStringConvertible {
     static let baseURLString = "http://example.com"
 
-    case Root
-    case User(String)
-    case Post(Int, Int, String)
-
-    // MARK: URLStringConvertible
-
     var URLString: String {
-        let path: String = {
-            switch self {
-            case .Root:
-                return "/"
-            case .User(let username):
-                return "/users/\(username)"
-            case .Post(let year, let month, let title):
-                let slug = title.stringByReplacingOccurrencesOfString(" ", withString: "-").lowercaseString
-                return "/\(year)/\(month)/\(slug)"
-            }
-        }()
-
-        return Router.baseURLString + path
+        return User.baseURLString + "/users/\(username)/"
     }
 }
 ```
 
 ```swift
-Alamofire.request(.GET, Router.User("mattt"))
+let user = User(username: "mattt")
+Alamofire.request(.GET, user) // http://example.com/users/mattt
 ```
 
 ### URLRequestConvertible
 
-Types adopting the `URLRequestConvertible` protocol can be used to construct URL requests. Like `URLStringConvertible`, this is recommended for applications with any significant interactions between client and server.
+Types adopting the `URLRequestConvertible` protocol can be used to construct URL requests. `NSURLRequest` conforms to `URLRequestConvertible` by default, allowing it to be passed into `request`, `upload`, and `download` methods directly (this is the recommended way to specify custom HTTP header fields or HTTP body for individual requests):
 
-Top-level and instance methods on `Manager` taking `URLRequestConvertible` arguments are provided as a way to provide type-safe routing. Such an approach can be used to abstract away server-side inconsistencies, as well as manage authentication credentials and other state.
+```swift
+let URL = NSURL(string: "http://httpbin.org/post")!
+let mutableURLRequest = NSMutableURLRequest(URL: URL)
+mutableURLRequest.HTTPMethod = "POST"
+
+let parameters = ["foo": "bar"]
+var JSONSerializationError: NSError? = nil
+mutableURLRequest.HTTPBody = NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: &JSONSerializationError)
+mutableURLRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+Alamofire.request(mutableURLRequest)
+```
+
+Applications interacting with web applications in a significant manner are encouraged to have custom types conform to `URLRequestConvertible` as a way to ensure consistency of requested endpoints. Such an approach can be used to abstract away server-side inconsistencies and provide type-safe routing, as well as manage authentication credentials and other state.
 
 #### API Parameter Abstraction
 

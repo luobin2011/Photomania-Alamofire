@@ -22,7 +22,7 @@ class ProgressIndicatorView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    let layer = self.layer as CAShapeLayer
+    let layer = self.layer as! CAShapeLayer
     
     let path = CGPathCreateWithEllipseInRect(self.bounds, nil)
     
@@ -41,7 +41,7 @@ class ProgressIndicatorView: UIView {
   
   var progress: Float = 0.0 {
     willSet {
-      let layer = self.layer as CAShapeLayer
+      let layer = self.layer as! CAShapeLayer
       labelLayer.string = NSString(format: "%.0f%%", newValue * 100)
       layer.strokeEnd = CGFloat(newValue)
     }

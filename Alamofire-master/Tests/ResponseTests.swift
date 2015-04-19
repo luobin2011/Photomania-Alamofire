@@ -1,6 +1,6 @@
 // ResponseTests.swift
 //
-// Copyright (c) 2014 Alamofire (http://alamofire.org)
+// Copyright (c) 2014–2015 Alamofire (http://alamofire.org)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,14 +31,15 @@ class AlamofireJSONResponseTestCase: XCTestCase {
 
         Alamofire.request(.GET, URL, parameters: ["foo": "bar"])
                  .responseJSON { (request, response, JSON, error) in
-                    expectation.fulfill()
                     XCTAssertNotNil(request, "request should not be nil")
                     XCTAssertNotNil(response, "response should not be nil")
                     XCTAssertNotNil(JSON, "JSON should not be nil")
                     XCTAssertNil(error, "error should be nil")
 
-                    XCTAssertEqual(JSON!["args"] as NSObject, ["foo": "bar"], "args should be equal")
-                 }
+                    XCTAssertEqual(JSON!["args"] as! NSObject, ["foo": "bar"], "args should be equal")
+
+                    expectation.fulfill()
+        }
 
         waitForExpectationsWithTimeout(10) { (error) in
             XCTAssertNil(error, "\(error)")
@@ -51,13 +52,14 @@ class AlamofireJSONResponseTestCase: XCTestCase {
 
         Alamofire.request(.POST, URL, parameters: ["foo": "bar"])
             .responseJSON { (request, response, JSON, error) in
-                expectation.fulfill()
                 XCTAssertNotNil(request, "request should not be nil")
                 XCTAssertNotNil(response, "response should not be nil")
                 XCTAssertNotNil(JSON, "JSON should not be nil")
                 XCTAssertNil(error, "error should be nil")
 
-                XCTAssertEqual(JSON!["form"] as NSObject, ["foo": "bar"], "args should be equal")
+                XCTAssertEqual(JSON!["form"] as! NSObject, ["foo": "bar"], "args should be equal")
+
+                expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(10) { (error) in

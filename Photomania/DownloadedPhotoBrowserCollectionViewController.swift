@@ -55,7 +55,7 @@ class DownloadedPhotoBrowserCollectionViewController: UICollectionViewController
   }
   
   override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(DownloadedPhotoBrowserCellIdentifier, forIndexPath: indexPath) as DownloadedPhotoBrowserCollectionViewCell
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(DownloadedPhotoBrowserCellIdentifier, forIndexPath: indexPath) as! DownloadedPhotoBrowserCollectionViewCell
     
     let localFileData = NSFileManager.defaultManager().contentsAtPath(downloadedPhotoURLs![indexPath.item].path!)
     
